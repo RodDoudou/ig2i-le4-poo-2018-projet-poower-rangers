@@ -5,6 +5,7 @@
  */
 package metier;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="CONFIGURATION")
-public class Configuration {
+public class Configuration  implements Serializable{
     @Id
     @Column(name="CONFIGNO")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +35,9 @@ public class Configuration {
     
     @Column(name="VALUEMAX")
     private int valueMax;
-
-    @JoinColumn(name = "ENTREPOT", referencedColumnName = "ENTREPOTNO")
-    @ManyToOne(optional = false)
-    private Entrepot entrepot;
+    
+    @JoinColumn(name="INSTANCE")
+    private Instance intstance;
     
     public Configuration() {
     }

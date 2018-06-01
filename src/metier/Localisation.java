@@ -5,6 +5,7 @@
  */
 package metier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="LOCALISATION")
-public class Localisation {
+public class Localisation  implements Serializable{
     @Id
     @Column(name="LOCALISATIONNO")
     private int id;
@@ -39,17 +40,24 @@ public class Localisation {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "localisation")
     private List<Distance> distances;
     
-    @JoinColumn(name = "ENTREPOT", referencedColumnName = "ENTREPOTNO")
     @ManyToOne(optional = false)
+    @JoinColumn(name = "ENTREPOT", referencedColumnName = "ENTREPOTNO")
     private Entrepot entrepot;
     
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "DISTANCE", referencedColumnName = "ID")
-    @OneToOne
     private Distance distance;
-
+    
+    @JoinColumn(name="PRODUIT")
+    private Produit produit;
+    
     public Localisation() {
 	distances = new ArrayList<Distance>();
     }
+    
+    @ManyToOne
+    @JoinColumn(name = "INSTANCE", referencedColumnName = "INSTANCENO")
+    private Instance instance;
 
     public Localisation(int id, int posX, int posY) {
 	this();

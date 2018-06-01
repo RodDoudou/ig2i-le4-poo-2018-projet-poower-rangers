@@ -7,7 +7,6 @@ package solution;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import metier.Chariot;
 import metier.Colis;
@@ -17,6 +16,7 @@ import metier.Entrepot;
 import metier.Instance;
 import metier.Produit;
 import metier.QuantiteProduit;
+import dao.*;
 
 /**
  *
@@ -27,6 +27,7 @@ public class Sample {
 
     public Sample(Instance instance) {
         this.instance = instance;
+        
     }
     
     public List<Chariot> sampleSolution(Entrepot entrepot, Configuration config) {
@@ -102,17 +103,23 @@ public class Sample {
     }
     
     public static void main(String[] args) {
+        
+	DaoFactory fabrique = DaoFactory.getDaoFactory(PersistenceType.JPA);
+	InstanceDao instanceManager = fabrique.getInstanceDao();
         Instance instance = new Instance("./instances/instance_0116_131950_Z1.txt");
         instance.parse();
         instance.dispatch();
-        
+
         Sample solution = new Sample(instance);
-        
+
         List<Chariot> chariots = new ArrayList<>();
-        
+
         Entrepot entrepot = instance.getEntrepot();
         Configuration config = instance.getConfig();
-        
+
         chariots.addAll(solution.sampleSolution(entrepot, config));
+
+        instanceManager.create(instance);
+
     }
 }

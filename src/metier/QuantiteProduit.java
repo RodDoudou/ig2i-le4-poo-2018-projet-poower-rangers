@@ -5,6 +5,7 @@
  */
 package metier;
 
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="QUANTITEPRODUIT")
-public class QuantiteProduit {
+public class QuantiteProduit  implements Serializable{
 
     private static final long serialVersionUID = 1L;
     @Id

@@ -5,8 +5,12 @@
  */
 package metier;
 
+import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,7 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="PRODUIT")
-public class Produit {
+public class Produit  implements Serializable{
     @Id
     @Column(name="PRODUITNO")
     private int id;
@@ -30,21 +34,25 @@ public class Produit {
     @Column(name="VOLUME")
     private int volume;
     
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="LOCALISATION", referencedColumnName ="LOCALISATIONNO")
     private Localisation localisation;
     
-    @JoinColumn(name = "ENTREPOT", referencedColumnName = "ENTREPOTNO")
     @ManyToOne(optional = false)
+    @JoinColumn(name = "ENTREPOT", referencedColumnName = "ENTREPOTNO")
     private Entrepot entrepot;
     
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "QUANTITEPRODUIT", referencedColumnName = "ID")
-    @OneToOne
     private QuantiteProduit quantiteProduit;
     
-    @JoinColumn(name = "COLIS", referencedColumnName = "COLISNO")
     @ManyToOne(optional = false)
+    @JoinColumn(name = "COLIS", referencedColumnName = "COLISNO")
     private Colis colis;
     
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "INSTANCE", referencedColumnName = "INSTANCENO")
+    private Instance instance;
     
     public Produit() {
     }

@@ -5,6 +5,7 @@
  */
 package metier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="COLIS")
-public class Colis {
+public class Colis implements Serializable {
     
     @Id
     @Column(name="COLISNO")
@@ -44,8 +45,8 @@ public class Colis {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "colis")
     private List<QuantiteProduit> produits;
     
-    @JoinColumn(name = "CHARIOT", referencedColumnName = "CHARIOTNO")
     @ManyToOne(optional = false)
+    @JoinColumn(name = "CHARIOT", referencedColumnName = "CHARIOTNO")
     private Chariot chariot;
 
     public Colis() {

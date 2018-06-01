@@ -5,6 +5,7 @@
  */
 package metier;
 
+import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -22,23 +23,23 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="DISTANCE")
-public class Distance {
+public class Distance  implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "LOCALISATION", referencedColumnName = "LOCALISATIONNO")
+    private Localisation localisation;
     
     @JoinColumn(name="ARRIVEE")
     private Localisation arrivee;
     
     @Column(name="DISTANCE")
     private Integer distance;
-
-    @JoinColumn(name = "LOCALISATION", referencedColumnName = "LOCALISATIONNO")
-    @ManyToOne(optional = false)
-    private Localisation localisation;
     
     public Distance() {
     }

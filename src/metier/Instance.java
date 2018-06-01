@@ -9,38 +9,106 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
  * @author Rod + Loïc
  */
-public class Instance {
+@Entity
+@Table(name="INSTANCE")
+public class Instance implements Serializable{
 
+        
+        @Id
+        @Column(name="INSTANCENO")
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+        
+        @OneToOne(cascade = CascadeType.PERSIST)
+        @JoinColumn(name = "ENTREPOT", referencedColumnName = "ENTREPOTNO")
 	private Entrepot entrepot;
+        
+        @OneToOne(cascade = CascadeType.PERSIST)
+        @JoinColumn(name = "CONFIG", referencedColumnName = "CONFIGNO")
 	private Configuration config;
+        
+        @Transient
 	private String pathToFile;
+        
+        @Transient
 	private int locationCount;
+        
+        @Transient
 	private int procuctCount;
+        
+        @Transient
 	private int trolleyCount;
+        
+        @Transient
 	private int dimensionCount;
-	private ArrayList<Integer> boxDimensions;
+        
+        @Transient
+	private List<Integer> boxDimensions;
+        
+        @Transient
 	private boolean acceptMixedOrders;
-	private ArrayList<ArrayList<Integer>> products;
+        
+        @Transient
+	private List<ArrayList<Integer>> products;
 	private int orderCount;
-	private ArrayList<ArrayList<Integer>> orders;
+        
+        @Transient
+	private List<ArrayList<Integer>> orders;
+        
+        @Transient
 	private int verticesIntersectionsCount;
+        
+        @Transient
 	private int departingDepot;
+        
+        @Transient
 	private int arrivalDepot;
-	private ArrayList<ArrayList<Integer>> arcs;
-	private ArrayList<ArrayList<Integer>> shortestPath;
-	private ArrayList<ArrayList<String>> locations;
-        ArrayList allLocation = new ArrayList<Localisation>();
-        ArrayList allProducts = new ArrayList<Produit>();
-        ArrayList allOrders = new ArrayList<Commande>();
+        
+        @Transient
+	private List<ArrayList<Integer>> arcs;
+        
+        @Transient
+	private List<ArrayList<Integer>> shortestPath;
+        
+        @Transient
+	private List<ArrayList<String>> locations;
+        
+        @ElementCollection
+        @OneToMany(cascade = CascadeType.ALL, mappedBy = "instance")
+        private List<Localisation> allLocation = new ArrayList<Localisation>();
+        
+        @ElementCollection
+        @OneToMany(cascade = CascadeType.ALL, mappedBy = "instance")
+        private List<Commande> allOrders = new ArrayList<Commande>();
+        
+        @ElementCollection
+        @OneToMany(cascade = CascadeType.ALL, mappedBy = "instance")
+        private List<Produit> allProducts = new ArrayList<Produit>();
+        
+        @Transient
 	private static boolean DEBUG = false;
 
 	public Instance() {
@@ -337,4 +405,12 @@ public class Instance {
 			System.out.println(instance.toStringDispatched());
 		}
 	}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
